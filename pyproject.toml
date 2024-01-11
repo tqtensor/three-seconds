@@ -7,7 +7,6 @@ version = "0.1.0"
 
 [tool.poetry.dependencies]
 gdown = "^4.7.1"
-katna = "^0.9.2"
 python = "^3.10"
 youtube-dl = {git = "https://github.com/ytdl-org/youtube-dl.git", rev = "master"}
 
