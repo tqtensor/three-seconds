@@ -1,5 +1,5 @@
-from PIL import Image
 import requests
+from PIL import Image
 from transformers import AutoImageProcessor, AutoModel
 
 

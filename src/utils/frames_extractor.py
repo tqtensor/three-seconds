@@ -1,5 +1,6 @@
-import ffmpy
 from typing import Optional
+
+import ffmpy
 
 
 class FramesExtractor:
