@@ -6,8 +6,11 @@ readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
+ffmpy = "^0.3.1"
 gdown = "^4.7.1"
+pillow = "^10.2.0"
 python = "^3.10"
+transformers = {extras = ["torch"], version = "^4.36.2"}
 youtube-dl = {git = "https://github.com/ytdl-org/youtube-dl.git", rev = "master"}
 
 [tool.poetry.group.dev.dependencies]
