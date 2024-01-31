@@ -12,10 +12,13 @@ In a nutshell, the video wants to tell us [meaning], and based on the [meaning],
 - Section 2: [viral segment 2] - I think this is linked to the punch line because of [reason], and it lasts for [duration] seconds
 - Section 3: [viral segment 3] - I think this is important to mention because of [reason], and it lasts for [duration] seconds
 
-The total duration of the viral segments is [duration] seconds.
+Self-evaluation. I have generated this video, with the total duration of the viral segments is [duration] seconds.
+Which is <shorter/longer/equal> as compared with the video length of {video_length} seconds.
 
-Self-evaluation. I have generated this story:
+<<<marker>>>
 "[viral segment 1] [viral segment 2] [viral segment 3]",
+<<<marker>>>
+
 And it is a good story because of [reason].
 
 INPUT :
