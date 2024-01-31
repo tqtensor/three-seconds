@@ -2,11 +2,10 @@ import json
 import os
 
 import librosa
-import numpy as np
 import soundfile as sf
 import torch
+import whisper_timestamped as whisper
 import youtube_dl
-from transformers import WhisperProcessor, pipeline
 
 from src.utils.frames_extractor import FramesExtractor
 
@@ -14,13 +13,6 @@ URLS = ["https://www.youtube.com/shorts/HQc4E9hb7JQ"]
 FPS = 2
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
-pipe = pipeline(
-    "automatic-speech-recognition",
-    model="openai/whisper-large",
-    chunk_length_s=30,
-    device=device,
-    generate_kwargs={"language": "malay"},
-)
 
 
 if __name__ == "__main__":
@@ -78,6 +70,13 @@ if __name__ == "__main__":
             sf.write(audio_path, audio, sr)
 
         # Transcribe audio
-        audio, sr = librosa.load(audio_path, sr=16000, mono=True)
-        prediction = pipe(audio)
-        print(prediction)
+        audio = whisper.load_audio(audio_path)
+        model = whisper.load_model(
+            name="mesolitica/malaysian-whisper-medium", device=device
+        )
+        result = whisper.transcribe(
+            model, audio, language="malay", detect_disfluencies=True
+        )
+
+        with open("dev.json", "w") as f:
+            json.dump(result, f, indent=2, ensure_ascii=False)
