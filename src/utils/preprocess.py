@@ -57,12 +57,8 @@ if __name__ == "__main__":
         )
 
         # Extract audio
-        audio_output_path = os.path.join(video_output_path, video_id, "audio")
-        if not os.path.exists(audio_output_path):
-            os.makedirs(audio_output_path)
-
         video_path = os.path.join(video_output_path, video_id, "video.mp4")
-        audio_path = os.path.join(audio_output_path, "audio.wav")
+        audio_path = os.path.join(video_output_path, video_id, "audio.wav")
 
         # Convert video to audio using librosa
         if not os.path.exists(audio_path):
