@@ -78,5 +78,7 @@ if __name__ == "__main__":
             model, audio, language="malay", detect_disfluencies=True
         )
 
-        with open("dev.json", "w") as f:
+        with open(
+            os.path.join(video_output_path, video_id, "transcript.json"), "w"
+        ) as f:
             json.dump(result, f, indent=2, ensure_ascii=False)
