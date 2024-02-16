@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 
 import librosa
 import soundfile as sf
@@ -9,7 +10,10 @@ import youtube_dl
 
 from src.utils.frames_extractor import FramesExtractor
 
-URLS = ["https://www.youtube.com/shorts/HQc4E9hb7JQ"]
+URLS = [
+    "https://www.youtube.com/shorts/HQc4E9hb7JQ",
+    Path("data/livestream_01/video.mp4"),
+]
 FPS = 2
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -27,24 +31,34 @@ if __name__ == "__main__":
         "outtmpl": video_output_path + "/%(id)s" + "/video.%(ext)s",
     }
     for video_url in URLS:
-        # Download the video
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            video_info = ydl.extract_info(url=video_url, download=False)
-            video_id = video_info["id"]
+        if isinstance(video_url, str):
+            # Download the video
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                video_info = ydl.extract_info(url=video_url, download=False)
+                video_id = video_info["id"]
 
-            if not os.path.exists(os.path.join(video_output_path, video_id)):
-                os.makedirs(os.path.join(video_output_path, video_id))
+                if not os.path.exists(os.path.join(video_output_path, video_id)):
+                    os.makedirs(os.path.join(video_output_path, video_id))
 
-            if not os.path.exists(
-                os.path.join(video_output_path, video_id, "video.mp4")
-            ):
-                ydl.download([video_url])
+                if not os.path.exists(
+                    os.path.join(video_output_path, video_id, "video.mp4")
+                ):
+                    ydl.download([video_url])
 
-            with open(os.path.join(video_output_path, video_id, "info.json"), "w") as f:
-                video_info = {
-                    k: v for k, v in video_info.items() if not isinstance(v, list)
-                }
-                json.dump(video_info, f, ensure_ascii=False)
+                with open(
+                    os.path.join(video_output_path, video_id, "info.json"), "w"
+                ) as f:
+                    video_info = {
+                        k: v for k, v in video_info.items() if not isinstance(v, list)
+                    }
+                    json.dump(video_info, f, ensure_ascii=False)
+        elif isinstance(video_url, Path):
+            # Check if the video exists
+            file_name = video_url.stem
+            assert file_name == "video", f"Invalid file name: {file_name}"
+            video_id = video_url.parent.stem
+        else:
+            raise ValueError(f"Invalid video_url: {video_url}")
 
         # Extract frames
         frames_output_path = os.path.join(video_output_path, video_id, "frames")
