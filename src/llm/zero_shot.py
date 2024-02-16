@@ -4,18 +4,30 @@ import os
 
 from dotenv import load_dotenv
 from langchain.chains import ConversationChain
+from langchain_community.chat_models import BedrockChat
 from langchain_openai import AzureChatOpenAI
 
 load_dotenv()
 
+LLM_MODEL = os.getenv("LLM_MODEL")
 SEGMENTS_PROMPT = open("prompts/segments.txt").read()
 
 if __name__ == "__main__":
-    llm = AzureChatOpenAI(
-        deployment_name="gpt-35",
-        openai_api_version=os.getenv("OPENAI_API_VERSION"),
-        temperature=0,
-    )
+    if LLM_MODEL == "gpt-35-turbo":
+        llm = AzureChatOpenAI(
+            deployment_name="gpt-35",
+            openai_api_version=os.getenv("OPENAI_API_VERSION"),
+            temperature=1,
+        )
+    elif LLM_MODEL == "claude-v2":
+        llm = BedrockChat(
+            credentials_profile_name="bedrock",
+            region_name="us-east-1",
+            model_id="anthropic.claude-v2",
+            model_kwargs={"temperature": 1},
+        )
+    else:
+        raise ValueError(f"Unknown LLM model: {LLM_MODEL}")
     qa = ConversationChain(llm=llm)
 
     for file in glob.glob("data/*/transcript.json"):
