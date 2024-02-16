@@ -17,14 +17,14 @@ if __name__ == "__main__":
         llm = AzureChatOpenAI(
             deployment_name="gpt-35",
             openai_api_version=os.getenv("OPENAI_API_VERSION"),
-            temperature=1,
+            temperature=0.5,
         )
     elif LLM_MODEL == "claude-v2":
         llm = BedrockChat(
             credentials_profile_name="bedrock",
             region_name="us-east-1",
             model_id="anthropic.claude-v2",
-            model_kwargs={"temperature": 1},
+            model_kwargs={"temperature": 0.5, "max_tokens_to_sample": 2048},
         )
     else:
         raise ValueError(f"Unknown LLM model: {LLM_MODEL}")
@@ -49,4 +49,8 @@ if __name__ == "__main__":
 
         # Execute the zero-shot agent
         result = qa.invoke(segments_prompt)
-        print(result["response"])
+
+        # Store the result
+        with open(file.replace("transcript.json", "zero_shot.txt"), "w") as f:
+            print(result["response"])
+            f.write(result["response"])
