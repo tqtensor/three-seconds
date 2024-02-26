@@ -15,6 +15,7 @@ librosa = "^0.10.1"
 pillow = "^10.2.0"
 python = "^3.10"
 python-dotenv = "^1.0.1"
+python-telegram-bot = ">=13.14,<14.0"
 transformers = {extras = ["torch"], version = "^4.36.2"}
 whisper-timestamped = "^1.14.4"
 youtube-dl = {git = "https://github.com/ytdl-org/youtube-dl.git", rev = "master"}
