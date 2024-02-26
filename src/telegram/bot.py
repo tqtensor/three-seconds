@@ -1,4 +1,5 @@
 import ast
+import hashlib
 import json
 import os
 
@@ -23,19 +24,26 @@ def process(update, context):
         update.message.reply_text(f"Invalid input: {e}")
         return
 
+    # Define Request ID
+    request_id = hashlib.sha256(user_input["video_id"].encode("utf-8")).hexdigest()[:12]
+
     # Download the video
+    if not os.path.exists(f"requests/{request_id}"):
+        os.makedirs(f"requests/{request_id}")
+
     try:
-        gdown.download(id=user_input["video_id"], output="video.mp4", quiet=False)
+        gdown.download(
+            id=user_input["video_id"],
+            output=f"requests/{request_id}/video.mp4",
+            quiet=False,
+        )
     except Exception as e:
         update.message.reply_text(f"Error downloading the video: {e}")
         return
 
-    # Define Request ID
-    request_id = user_input["video_id"]
-
     # Write the user input to a file
-    with open(f"request_{request_id}.json", "w") as file:
-        file.write(json.dumps(user_input))
+    with open(f"requests/{request_id}/request.json", "w") as f:
+        f.write(json.dumps(user_input))
 
     # Send a response message
     update.message.reply_text(f"Your request ID is {request_id}, please wait")

@@ -5,6 +5,13 @@ import re
 import subprocess
 from collections import Counter
 
+from dotenv import load_dotenv
+
+from src.llm.zero_shot import ZeroShot
+from src.utils.preprocess import Preprocessor
+
+load_dotenv()
+
 
 def best_match_overlap_score(given_array, candidate_arrays):
     """
@@ -82,7 +89,8 @@ def trim_video(source_file, start_time, end_time, buffer, output_file):
     print(command)
 
     # Execute the command using subprocess
-    os.remove(output_file)
+    if os.path.exists(output_file):
+        os.remove(output_file)
     process = subprocess.run(command.split(), capture_output=True)
 
     # Check for any errors
@@ -92,33 +100,40 @@ def trim_video(source_file, start_time, end_time, buffer, output_file):
         print(f"Video trimmed successfully! Saved to: {output_file}")
 
 
-if __name__ == "__main__":
-    for file in glob.glob("data/*/zero_shot.txt"):
-        print("-" * 100)
-        # Load the transcript
-        transcript = json.load(open(file.replace("zero_shot.txt", "transcript.json")))
+def main():
+    for request_file in glob.glob("requests/*/request.json"):
+        # Prepare the file directories
+        video_file = request_file.replace("request.json", "video.mp4")
+        transcript_file = request_file.replace("request.json", "transcript.json")
+        zero_shot_file = request_file.replace("request.json", "zero_shot.txt")
+
+        # Preprocess the video
+        Preprocessor.transcribe_audio(video_file)
+
+        # Invoke the zero-shot agent
+        agent = ZeroShot(llm_model=os.getenv("LLM_MODEL"))
+        agent.invoke(transcript_file)
+
+        # Trim the video
+        transcript = json.load(open(transcript_file))
 
         # Locate the sections
-        with open(file, "r") as f:
+        with open(zero_shot_file, "r") as f:
             content = f.read()
-            sections = re.findall(r'- Section \d+: "(.*?)"', content, re.DOTALL)
+            sections = re.findall(r'Section \d+: "(.*?)"', content, re.DOTALL)
             for idx, section in enumerate(sections):
                 # Find the best matching segment
                 segments = [
                     segment["text"].strip().split()
                     for segment in transcript["segments"]
                 ]
-                print("*" * 50)
-                print(section)
-                print()
                 (
-                    best_match,
+                    _,
                     best_match_index,
                     start_index,
                     end_index,
                     _,
                 ) = best_match_overlap_score(section.split(), segments)
-                print(" ".join(best_match[start_index : end_index + 1]))
 
                 # Trim the video
                 start_time = transcript["segments"][best_match_index]["words"][
@@ -128,9 +143,15 @@ if __name__ == "__main__":
                     "end"
                 ]
                 trim_video(
-                    file.replace("zero_shot.txt", "video.mp4"),
+                    video_file,
                     start_time,
                     end_time,
                     0.50,
-                    file.replace("zero_shot.txt", "trimmed_{}.mp4".format(idx + 1)),
+                    zero_shot_file.replace(
+                        "zero_shot.txt", "trimmed_{}.mp4".format(idx + 1)
+                    ),
                 )
+
+
+if __name__ == "__main__":
+    main()

@@ -6,6 +6,8 @@ The output should conform to this structure:
 
 OUTPUT:
 
+<English text>
+
 In a nutshell, the video wants to tell us [meaning], and based on the [meaning], I have identified the following viral segments that conform with the mentioned rules.
 
 - Section 1: [viral segment 1] - I think this is the punch line because of [reason], and it lasts for [duration] seconds
