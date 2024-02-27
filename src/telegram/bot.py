@@ -6,6 +6,7 @@ import os
 import gdown
 from dotenv import load_dotenv
 
+from src.main import main as three_seconds
 from telegram.ext import CommandHandler, Updater
 
 load_dotenv()
@@ -45,8 +46,13 @@ def process(update, context):
     with open(f"requests/{request_id}/request.json", "w") as f:
         f.write(json.dumps(user_input))
 
+    # Run the main function
+    output = three_seconds(request_id=request_id)
+
     # Send a response message
-    update.message.reply_text(f"Your request ID is {request_id}, please wait")
+    update.message.reply_text(
+        f"Your short video is ready! https://drive.google.com/drive/folders/{output}"
+    )
 
 
 def main():

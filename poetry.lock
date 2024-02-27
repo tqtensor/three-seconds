@@ -584,18 +584,18 @@ css = ["tinycss2 (>=1.1.0,<1.3)"]
 
 [[package]]
 name = "boto3"
-version = "1.34.49"
+version = "1.34.50"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.8"
 files = [
-    {file = "boto3-1.34.49-py3-none-any.whl", hash = "sha256:ce8d1de03024f52a1810e8d71ad4dba3a5b9bb48b35567191500e3432a9130b4"},
-    {file = "boto3-1.34.49.tar.gz", hash = "sha256:96b9dc85ce8d52619b56ca7b1ac1423eaf0af5ce132904bcc8aa81396eec2abf"},
+    {file = "boto3-1.34.50-py3-none-any.whl", hash = "sha256:8d709365231234bc4f0ca98fdf33a25eeebf78072853c6aa3d259f0f5cf09877"},
+    {file = "boto3-1.34.50.tar.gz", hash = "sha256:290952be7899560039cb0042e8a2354f61a7dead0d0ca8bea6ba901930df0468"},
 ]
 
 [package.dependencies]
-botocore = ">=1.34.49,<1.35.0"
+botocore = ">=1.34.50,<1.35.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -604,14 +604,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.34.49"
+version = "1.34.50"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.8"
 files = [
-    {file = "botocore-1.34.49-py3-none-any.whl", hash = "sha256:4ed9d7603a04b5bb5bd5de63b513bc2c8a7e8b1cd0088229c5ceb461161f43b6"},
-    {file = "botocore-1.34.49.tar.gz", hash = "sha256:d89410bc60673eaff1699f3f1fdcb0e3a5e1f7a6a048c0d88c3ce5c3549433ec"},
+    {file = "botocore-1.34.50-py3-none-any.whl", hash = "sha256:fda510559dbe796eefdb59561cc81be1b99afba3dee53fd23db9a3d587adc0ab"},
+    {file = "botocore-1.34.50.tar.gz", hash = "sha256:33ab82cb96c4bb684f0dbafb071808e4817d83debc88b223e7d988256370c6d7"},
 ]
 
 [package.dependencies]
@@ -2042,7 +2042,7 @@ test = ["black", "coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock", "mypy", "pre
 name = "google-api-core"
 version = "2.17.1"
 description = "Google API client core library"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2062,10 +2062,29 @@ grpcgcp = ["grpcio-gcp (>=0.2.2,<1.0.dev0)"]
 grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0.dev0)"]
 
 [[package]]
+name = "google-api-python-client"
+version = "2.119.0"
+description = "Google API Client Library for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "google-api-python-client-2.119.0.tar.gz", hash = "sha256:ff9ef7539eaf7e088a481b25d1af4704210b07863e1d51b5ee498b910a3a46a3"},
+    {file = "google_api_python_client-2.119.0-py2.py3-none-any.whl", hash = "sha256:84e43bdb58dd8d2301669513863996378ffe9a3bf6d23b5ccd4f1e021323dbeb"},
+]
+
+[package.dependencies]
+google-api-core = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0.dev0"
+google-auth = ">=1.19.0,<3.0.0.dev0"
+google-auth-httplib2 = ">=0.1.0"
+httplib2 = ">=0.15.0,<1.dev0"
+uritemplate = ">=3.0.1,<5"
+
+[[package]]
 name = "google-auth"
 version = "2.28.1"
 description = "Google Authentication Library"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2086,10 +2105,26 @@ reauth = ["pyu2f (>=0.1.5)"]
 requests = ["requests (>=2.20.0,<3.0.0.dev0)"]
 
 [[package]]
+name = "google-auth-httplib2"
+version = "0.2.0"
+description = "Google Authentication Library: httplib2 transport"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "google-auth-httplib2-0.2.0.tar.gz", hash = "sha256:38aa7badf48f974f1eb9861794e9c0cb2a0511a4ec0679b1f886d108f5640e05"},
+    {file = "google_auth_httplib2-0.2.0-py2.py3-none-any.whl", hash = "sha256:b65a0a2123300dd71281a7bf6e64d65a0759287df52729bdd1ae2e47dc311a3d"},
+]
+
+[package.dependencies]
+google-auth = "*"
+httplib2 = ">=0.19.0"
+
+[[package]]
 name = "google-auth-oauthlib"
 version = "1.2.0"
 description = "Google Authentication Library"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -2250,7 +2285,7 @@ requests = ["requests (>=2.18.0,<3.0.0dev)"]
 name = "googleapis-common-protos"
 version = "1.62.0"
 description = "Common protobufs used in Google APIs"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2389,6 +2424,21 @@ socks = ["socksio (>=1.0.0,<2.0.0)"]
 trio = ["trio (>=0.22.0,<0.25.0)"]
 
 [[package]]
+name = "httplib2"
+version = "0.22.0"
+description = "A comprehensive HTTP client library."
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
+    {file = "httplib2-0.22.0-py3-none-any.whl", hash = "sha256:14ae0a53c1ba8f3d37e9e27cf37eabb0fb9980f435ba405d546948b009dd64dc"},
+    {file = "httplib2-0.22.0.tar.gz", hash = "sha256:d7a10bc5ef5ab08322488bde8c726eeee5c8618723fdb399597ec58f3d82df81"},
+]
+
+[package.dependencies]
+pyparsing = {version = ">=2.4.2,<3.0.0 || >3.0.0,<3.0.1 || >3.0.1,<3.0.2 || >3.0.2,<3.0.3 || >3.0.3,<4", markers = "python_version > \"3.0\""}
+
+[[package]]
 name = "httpx"
 version = "0.27.0"
 description = "The next generation HTTP client."
@@ -2524,14 +2574,14 @@ files = [
 
 [[package]]
 name = "ipykernel"
-version = "6.29.2"
+version = "6.29.3"
 description = "IPython Kernel for Jupyter"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "ipykernel-6.29.2-py3-none-any.whl", hash = "sha256:50384f5c577a260a1d53f1f59a828c7266d321c9b7d00d345693783f66616055"},
-    {file = "ipykernel-6.29.2.tar.gz", hash = "sha256:3bade28004e3ff624ed57974948116670604ac5f676d12339693f3142176d3f0"},
+    {file = "ipykernel-6.29.3-py3-none-any.whl", hash = "sha256:5aa086a4175b0229d4eca211e181fb473ea78ffd9869af36ba7694c947302a21"},
+    {file = "ipykernel-6.29.3.tar.gz", hash = "sha256:e14c250d1f9ea3989490225cc1a542781b095a18a19447fcf2b5eaf7d0ac5bd2"},
 ]
 
 [package.dependencies]
@@ -2554,7 +2604,7 @@ cov = ["coverage[toml]", "curio", "matplotlib", "pytest-cov", "trio"]
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx", "sphinx-autodoc-typehints", "sphinxcontrib-github-alt", "sphinxcontrib-spelling", "trio"]
 pyqt5 = ["pyqt5"]
 pyside6 = ["pyside6"]
-test = ["flaky", "ipyparallel", "pre-commit", "pytest (>=7.0)", "pytest-asyncio (==0.23.4)", "pytest-cov", "pytest-timeout"]
+test = ["flaky", "ipyparallel", "pre-commit", "pytest (>=7.0)", "pytest-asyncio (>=0.23.5)", "pytest-cov", "pytest-timeout"]
 
 [[package]]
 name = "ipython"
@@ -3110,14 +3160,14 @@ extended-testing = ["aiosqlite (>=0.19.0,<0.20.0)", "aleph-alpha-client (>=2.15.
 
 [[package]]
 name = "langchain-core"
-version = "0.1.26"
+version = "0.1.27"
 description = "Building applications with LLMs through composability"
 category = "main"
 optional = false
 python-versions = ">=3.8.1,<4.0"
 files = [
-    {file = "langchain_core-0.1.26-py3-none-any.whl", hash = "sha256:4f54cd26c27473172d7a214a5507a4c0e3255c6d8c25d9087afdc967f5588516"},
-    {file = "langchain_core-0.1.26.tar.gz", hash = "sha256:6186758d62015723aac67ef1a2055695d03e82c4dd4074217975b0c62faf4b17"},
+    {file = "langchain_core-0.1.27-py3-none-any.whl", hash = "sha256:68eb89dc4a932baf4fb6b4b75b7119eec9e5405e892d2137e9fe0a1d24a40d0c"},
+    {file = "langchain_core-0.1.27.tar.gz", hash = "sha256:698414223525c0bc130d85a614e1493905d588ab72fe0c9ad3b537b1dc62067f"},
 ]
 
 [package.dependencies]
@@ -3153,14 +3203,14 @@ tiktoken = ">=0.5.2,<0.6.0"
 
 [[package]]
 name = "langsmith"
-version = "0.1.8"
+version = "0.1.9"
 description = "Client library to connect to the LangSmith LLM Tracing and Evaluation Platform."
 category = "main"
 optional = false
 python-versions = ">=3.8.1,<4.0"
 files = [
-    {file = "langsmith-0.1.8-py3-none-any.whl", hash = "sha256:f4320fd80ec9d311a648e7d4c44e0814e6e5454772c5026f40db0307bc07e287"},
-    {file = "langsmith-0.1.8.tar.gz", hash = "sha256:ab5f1cdfb7d418109ea506d41928fb8708547db2f6c7f7da7cfe997f3c55767b"},
+    {file = "langsmith-0.1.9-py3-none-any.whl", hash = "sha256:f821b3cb07a87eac5cb2181ff0b61051811e4eef09ae4b46e700981f7ae5dfb9"},
+    {file = "langsmith-0.1.9.tar.gz", hash = "sha256:9bd3e80607722c3d2db84cf3440005491a859b80b5e499bc988032d5c2da91f0"},
 ]
 
 [package.dependencies]
@@ -3344,23 +3394,22 @@ files = [
 
 [[package]]
 name = "marshmallow"
-version = "3.20.2"
+version = "3.21.0"
 description = "A lightweight library for converting complex datatypes to and from native Python datatypes."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "marshmallow-3.20.2-py3-none-any.whl", hash = "sha256:c21d4b98fee747c130e6bc8f45c4b3199ea66bc00c12ee1f639f0aeca034d5e9"},
-    {file = "marshmallow-3.20.2.tar.gz", hash = "sha256:4c1daff273513dc5eb24b219a8035559dc573c8f322558ef85f5438ddd1236dd"},
+    {file = "marshmallow-3.21.0-py3-none-any.whl", hash = "sha256:e7997f83571c7fd476042c2c188e4ee8a78900ca5e74bd9c8097afa56624e9bd"},
+    {file = "marshmallow-3.21.0.tar.gz", hash = "sha256:20f53be28c6e374a711a16165fb22a8dc6003e3f7cda1285e3ca777b9193885b"},
 ]
 
 [package.dependencies]
 packaging = ">=17.0"
 
 [package.extras]
-dev = ["pre-commit (>=2.4,<4.0)", "pytest", "pytz", "simplejson", "tox"]
-docs = ["alabaster (==0.7.15)", "autodocsumm (==0.2.12)", "sphinx (==7.2.6)", "sphinx-issues (==3.0.1)", "sphinx-version-warning (==1.1.2)"]
-lint = ["pre-commit (>=2.4,<4.0)"]
+dev = ["marshmallow[tests]", "pre-commit (>=3.5,<4.0)", "tox"]
+docs = ["alabaster (==0.7.16)", "autodocsumm (==0.2.12)", "sphinx (==7.2.6)", "sphinx-issues (==4.0.0)", "sphinx-version-warning (==1.1.2)"]
 tests = ["pytest", "pytz", "simplejson"]
 
 [[package]]
@@ -4187,7 +4236,7 @@ files = [
 name = "oauthlib"
 version = "3.2.2"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -4509,14 +4558,14 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4)", "pytest-co
 
 [[package]]
 name = "poetry"
-version = "1.8.0"
+version = "1.8.1"
 description = "Python dependency management and packaging made easy."
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "poetry-1.8.0-py3-none-any.whl", hash = "sha256:5c418265099b681e399a1521e72d98f407a015cade8ff37260b1359c1afd773c"},
-    {file = "poetry-1.8.0.tar.gz", hash = "sha256:27676b30e17c44b836cc002bf3cf8472f01fce886bddb4987caf14aeb4663165"},
+    {file = "poetry-1.8.1-py3-none-any.whl", hash = "sha256:cf133946661025822672422769567980f8e489ed5b6fc170d1025a4d6c9aac29"},
+    {file = "poetry-1.8.1.tar.gz", hash = "sha256:23519cc45eb3cf48e899145bc762425a141e3afd52ecc53ec443ca635122327f"},
 ]
 
 [package.dependencies]
@@ -4528,7 +4577,7 @@ dulwich = ">=0.21.2,<0.22.0"
 fastjsonschema = ">=2.18.0,<3.0.0"
 installer = ">=0.7.0,<0.8.0"
 keyring = ">=24.0.0,<25.0.0"
-packaging = ">=20.5"
+packaging = ">=23.1"
 pexpect = ">=4.7.0,<5.0.0"
 pkginfo = ">=1.9.4,<2.0.0"
 platformdirs = ">=3.0.0,<5"
@@ -4647,7 +4696,7 @@ wcwidth = "*"
 name = "protobuf"
 version = "4.25.3"
 description = ""
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -4724,7 +4773,7 @@ tests = ["pytest"]
 name = "pyasn1"
 version = "0.5.1"
 description = "Pure-Python implementation of ASN.1 types and DER/BER/CER codecs (X.208)"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 files = [
@@ -4736,7 +4785,7 @@ files = [
 name = "pyasn1-modules"
 version = "0.3.0"
 description = "A collection of ASN.1-based protocols modules"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 files = [
@@ -5016,7 +5065,7 @@ testutils = ["gitpython (>3)"]
 name = "pyparsing"
 version = "3.1.1"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.8"
 files = [
@@ -5174,18 +5223,18 @@ files = [
 
 [[package]]
 name = "pywinpty"
-version = "2.0.12"
+version = "2.0.13"
 description = "Pseudo terminal support for Windows from Python."
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pywinpty-2.0.12-cp310-none-win_amd64.whl", hash = "sha256:21319cd1d7c8844fb2c970fb3a55a3db5543f112ff9cfcd623746b9c47501575"},
-    {file = "pywinpty-2.0.12-cp311-none-win_amd64.whl", hash = "sha256:853985a8f48f4731a716653170cd735da36ffbdc79dcb4c7b7140bce11d8c722"},
-    {file = "pywinpty-2.0.12-cp312-none-win_amd64.whl", hash = "sha256:1617b729999eb6713590e17665052b1a6ae0ad76ee31e60b444147c5b6a35dca"},
-    {file = "pywinpty-2.0.12-cp38-none-win_amd64.whl", hash = "sha256:189380469ca143d06e19e19ff3fba0fcefe8b4a8cc942140a6b863aed7eebb2d"},
-    {file = "pywinpty-2.0.12-cp39-none-win_amd64.whl", hash = "sha256:7520575b6546db23e693cbd865db2764097bd6d4ef5dc18c92555904cd62c3d4"},
-    {file = "pywinpty-2.0.12.tar.gz", hash = "sha256:8197de460ae8ebb7f5d1701dfa1b5df45b157bb832e92acba316305e18ca00dd"},
+    {file = "pywinpty-2.0.13-cp310-none-win_amd64.whl", hash = "sha256:697bff211fb5a6508fee2dc6ff174ce03f34a9a233df9d8b5fe9c8ce4d5eaf56"},
+    {file = "pywinpty-2.0.13-cp311-none-win_amd64.whl", hash = "sha256:b96fb14698db1284db84ca38c79f15b4cfdc3172065b5137383910567591fa99"},
+    {file = "pywinpty-2.0.13-cp312-none-win_amd64.whl", hash = "sha256:2fd876b82ca750bb1333236ce98488c1be96b08f4f7647cfdf4129dfad83c2d4"},
+    {file = "pywinpty-2.0.13-cp38-none-win_amd64.whl", hash = "sha256:61d420c2116c0212808d31625611b51caf621fe67f8a6377e2e8b617ea1c1f7d"},
+    {file = "pywinpty-2.0.13-cp39-none-win_amd64.whl", hash = "sha256:71cb613a9ee24174730ac7ae439fd179ca34ccb8c5349e8d7b72ab5dea2c6f4b"},
+    {file = "pywinpty-2.0.13.tar.gz", hash = "sha256:c34e32351a3313ddd0d7da23d27f835c860d32fe4ac814d372a3ea9594f41dde"},
 ]
 
 [[package]]
@@ -5604,7 +5653,7 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 name = "requests-oauthlib"
 version = "1.3.1"
 description = "OAuthlib authentication support for Requests."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -5766,7 +5815,7 @@ files = [
 name = "rsa"
 version = "4.9"
 description = "Pure-Python RSA implementation"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6,<4"
 files = [
@@ -6816,14 +6865,14 @@ files = [
 
 [[package]]
 name = "tomlkit"
-version = "0.12.3"
+version = "0.12.4"
 description = "Style preserving TOML library"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "tomlkit-0.12.3-py3-none-any.whl", hash = "sha256:b0a645a9156dc7cb5d3a1f0d4bab66db287fcb8e0430bdd4664a095ea16414ba"},
-    {file = "tomlkit-0.12.3.tar.gz", hash = "sha256:75baf5012d06501f07bee5bf8e801b9f343e7aac5a92581f20f80ce632e6b5a4"},
+    {file = "tomlkit-0.12.4-py3-none-any.whl", hash = "sha256:5cd82d48a3dd89dee1f9d64420aa20ae65cfbd00668d6f094d7578a78efbb77b"},
+    {file = "tomlkit-0.12.4.tar.gz", hash = "sha256:7ca1cfc12232806517a8515047ba66a19369e71edf2439d0f5824f91032b6cc3"},
 ]
 
 [[package]]
@@ -7137,6 +7186,18 @@ tzdata = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.extras]
 devenv = ["check-manifest", "pytest (>=4.3)", "pytest-cov", "pytest-mock (>=3.3)", "zest.releaser"]
+
+[[package]]
+name = "uritemplate"
+version = "4.1.1"
+description = "Implementation of RFC 6570 URI Templates"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "uritemplate-4.1.1-py2.py3-none-any.whl", hash = "sha256:830c08b8d99bdd312ea4ead05994a38e8936266f84b9a7878232db50b044e02e"},
+    {file = "uritemplate-4.1.1.tar.gz", hash = "sha256:4346edfc5c3b79f694bccd6d6099a322bbeb628dbf2cd86eea55a456ce5124f0"},
+]
 
 [[package]]
 name = "urllib3"
@@ -7496,4 +7557,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d609447e9f075777b48cf8e888fc91b7fcadd061046232028fbb811739098091"
+content-hash = "7cfdd736daa27cd13b37b175cc1f5265ca726ebe735749901a6095d4d2395564"
