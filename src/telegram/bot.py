@@ -32,15 +32,16 @@ def process(update, context):
     if not os.path.exists(f"requests/{request_id}"):
         os.makedirs(f"requests/{request_id}")
 
-    try:
-        gdown.download(
-            id=user_input["video_id"],
-            output=f"requests/{request_id}/video.mp4",
-            quiet=False,
-        )
-    except Exception as e:
-        update.message.reply_text(f"Error downloading the video: {e}")
-        return
+    if not os.path.exists(f"requests/{request_id}/video.mp4"):
+        try:
+            gdown.download(
+                id=user_input["video_id"],
+                output=f"requests/{request_id}/video.mp4",
+                quiet=False,
+            )
+        except Exception as e:
+            update.message.reply_text(f"Error downloading the video: {e}")
+            return
 
     # Write the user input to a file
     with open(f"requests/{request_id}/request.json", "w") as f:

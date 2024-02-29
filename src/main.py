@@ -18,18 +18,6 @@ gdrive = GoogleDrive()
 
 
 def best_match_overlap_score(given_array, candidate_arrays):
-    """
-    Finds the candidate array with the highest overlap score for a sub-array
-    compared to the given array.
-
-    Args:
-      given_array: The given array.
-      candidate_arrays: List of candidate arrays.
-
-    Returns:
-      A tuple of (best_match_candidate, best_match_index, start_index, end_index, overlap_score), or None if no match.
-    """
-
     best_match = None
     best_match_index = None
     max_overlap_score = 0
@@ -40,8 +28,14 @@ def best_match_overlap_score(given_array, candidate_arrays):
         # Count occurrences of each element in the candidate array
         candidate_element_counts = Counter(candidate)
 
-        # Check for intersection and iterate through possible sub-arrays within the candidate
-        if set(given_array).issubset(candidate_element_counts):
+        # Calculate the percentage of elements in given_array that are
+        # also in candidate_element_counts
+        percentage = (
+            len(set(given_array).intersection(candidate_element_counts))
+            / len(given_array)
+            * 100
+        )
+        if percentage > 50:
             for i in range(len(candidate) - len(given_array) + 1):
                 sub_array = candidate[i : i + len(given_array)]
                 sub_array_counts = Counter(sub_array)
@@ -62,7 +56,6 @@ def best_match_overlap_score(given_array, candidate_arrays):
                     best_match_index = index
                     best_start_index = i
                     best_end_index = i + len(given_array) - 1
-
     return (
         best_match,
         best_match_index,
@@ -73,17 +66,6 @@ def best_match_overlap_score(given_array, candidate_arrays):
 
 
 def trim_video(source_file, start_time, end_time, buffer, output_file):
-    """
-    Trims a video based on start and end time arguments and saves it to a new file.
-
-    Args:
-      source_file: Path to the input video file (.mp4).
-      start_time: Start time of the clip in seconds (e.g., 10.5 for 10 seconds and 0.5 seconds).
-      end_time: End time of the clip in seconds.
-      buffer: Buffer time in seconds to add before and after the clip.
-      output_file: Path to the output video file (.mp4).
-    """
-
     # Construct the ffmpeg command using f-strings
     start_time = max(0, start_time - buffer)
     end_time += buffer
@@ -116,70 +98,82 @@ def main(request_id: str) -> str:
             transcript_file = request_file.replace("request.json", "transcript.json")
             zero_shot_file = request_file.replace("request.json", "zero_shot.txt")
 
-            # Preprocess the video
-            Preprocessor.transcribe_audio(video_file)
+            if not os.path.exists(transcript_file):
+                # Preprocess the video
+                Preprocessor.transcribe_audio(video_file)
 
-            # Invoke the zero-shot agent
-            agent = ZeroShot(llm_model=os.getenv("LLM_MODEL"))
-            agent.invoke(transcript_file)
-
-            # Trim the video
-            transcript = json.load(open(transcript_file))
-
-            # Locate the sections
-            with open(zero_shot_file, "r") as f:
-                content = f.read()
-                sections = re.findall(r'Section \d+: "(.*?)"', content, re.DOTALL)
-                for idx, section in enumerate(sections):
-                    # Find the best matching segment
-                    segments = [
-                        segment["text"].strip().split()
-                        for segment in transcript["segments"]
-                    ]
-                    (
-                        _,
-                        best_match_index,
-                        start_index,
-                        end_index,
-                        _,
-                    ) = best_match_overlap_score(section.split(), segments)
-
-                    # Trim the video
-                    start_time = transcript["segments"][best_match_index]["words"][
-                        start_index
-                    ]["start"]
-                    end_time = transcript["segments"][best_match_index]["words"][
-                        end_index
-                    ]["end"]
-
-                    # Create output folder
-                    dir_name, _ = os.path.split(request_file)
-                    output_folder = os.path.join(
-                        dir_name, dir_name.split("/")[-1] + "_output"
-                    )
-                    if not os.path.exists(output_folder):
-                        os.makedirs(output_folder)
-
-                    # Trim the video
-                    trim_video(
-                        video_file,
-                        start_time,
-                        end_time,
-                        0.50,
-                        os.path.join(output_folder, f"section_{idx}.mp4"),
-                    )
-                    shutil.copy(
-                        zero_shot_file, os.path.join(output_folder, "readme.txt")
-                    )
-
-                # Upload the output folder to Google Drive
-                gdrive_folder = gdrive.upload_folder_to_drive(
-                    output_folder, os.getenv("DRIVE_FOLDER_ID")
+            success = False
+            while not success:
+                # Invoke the zero-shot agent
+                agent = ZeroShot(llm_model=os.getenv("LLM_MODEL"))
+                agent.invoke(
+                    transcript_path=transcript_file,
+                    video_length=float(request.get("length")),
                 )
 
-                # Write status SUCCESS to the request file
-                request["status"] = "SUCCESS"
-                request["gdrive_folder"] = gdrive_folder
+                # Trim the video
+                transcript = json.load(open(transcript_file))
+
+                # Locate the sections
+                with open(zero_shot_file, "r") as f:
+                    content = f.read()
+                    sections = re.findall(r'Section \d+: "(.*?)"', content, re.DOTALL)
+                    for idx, section in enumerate(sections):
+                        # Find the best matching segment
+                        segments = [
+                            segment["text"].strip().split()
+                            for segment in transcript["segments"]
+                        ]
+                        (
+                            _,
+                            best_match_index,
+                            start_index,
+                            end_index,
+                            _,
+                        ) = best_match_overlap_score(section.split(), segments)
+
+                        if start_index is None or end_index is None:
+                            continue
+
+                        # Trim the video
+                        start_time = transcript["segments"][best_match_index]["words"][
+                            start_index
+                        ]["start"]
+                        end_time = transcript["segments"][best_match_index]["words"][
+                            end_index
+                        ]["end"]
+
+                        # Create output folder
+                        dir_name, _ = os.path.split(request_file)
+                        output_folder = os.path.join(
+                            dir_name, dir_name.split("/")[-1] + "_output"
+                        )
+                        if not os.path.exists(output_folder):
+                            os.makedirs(output_folder)
+
+                        # Trim the video
+                        trim_video(
+                            video_file,
+                            start_time,
+                            end_time,
+                            0.50,
+                            os.path.join(output_folder, f"section_{idx}.mp4"),
+                        )
+                        shutil.copy(
+                            zero_shot_file, os.path.join(output_folder, "readme.txt")
+                        )
+
+                    # Upload the output folder to Google Drive
+                    gdrive_folder = gdrive.upload_folder_to_drive(
+                        output_folder, os.getenv("DRIVE_FOLDER_ID")
+                    )
+
+                    # Write status SUCCESS to the request file
+                    request["status"] = "SUCCESS"
+                    request["gdrive_folder"] = gdrive_folder
+
+                    # End the loop
+                    success = True
         else:
             gdrive_folder = request.get("gdrive_folder")
 

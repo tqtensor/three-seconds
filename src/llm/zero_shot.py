@@ -28,7 +28,7 @@ class ZeroShot:
 
         self.qa = ConversationChain(llm=llm)
 
-    def invoke(self, transcript_path: str) -> None:
+    def invoke(self, transcript_path: str, video_length: float) -> None:
         # Load the transcript
         data = json.load(open(transcript_path))
         transcript = data["text"]
@@ -41,7 +41,7 @@ class ZeroShot:
         avg_duration = sum(durations) / len(durations)
 
         segments_prompt = SEGMENTS_PROMPT.format(
-            transcript=transcript, avg_duration=avg_duration, video_length=15
+            transcript=transcript, avg_duration=avg_duration, video_length=video_length
         )
 
         # Execute the zero-shot agent
