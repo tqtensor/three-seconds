@@ -17,7 +17,7 @@ load_dotenv()
 gdrive = GoogleDrive()
 
 
-def best_match_overlap_score(given_array, candidate_arrays):
+def _best_match_overlap_score(given_array, candidate_arrays):
     best_match = None
     best_match_index = None
     max_overlap_score = 0
@@ -65,7 +65,7 @@ def best_match_overlap_score(given_array, candidate_arrays):
     )
 
 
-def trim_video(source_file, start_time, end_time, buffer, output_file):
+def _trim_video(source_file, start_time, end_time, buffer, output_file):
     # Construct the ffmpeg command using f-strings
     start_time = max(0, start_time - buffer)
     end_time += buffer
@@ -100,7 +100,9 @@ def main(request_id: str) -> str:
 
             if not os.path.exists(transcript_file):
                 # Preprocess the video
-                Preprocessor.transcribe_audio(video_file)
+                Preprocessor.transcribe_audio(
+                    video_path=video_file, model_name="distil-whisper/distil-large-v2"
+                )
 
             success = False
             while not success:
@@ -130,7 +132,7 @@ def main(request_id: str) -> str:
                             start_index,
                             end_index,
                             _,
-                        ) = best_match_overlap_score(section.split(), segments)
+                        ) = _best_match_overlap_score(section.split(), segments)
 
                         if start_index is None or end_index is None:
                             continue
@@ -152,7 +154,7 @@ def main(request_id: str) -> str:
                             os.makedirs(output_folder)
 
                         # Trim the video
-                        trim_video(
+                        _trim_video(
                             video_file,
                             start_time,
                             end_time,
